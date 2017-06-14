@@ -1,16 +1,13 @@
 /* Runge Kutta integrator from numerical recipies plus improvements */
 /* void *deri(int n,double h[],double D[],double t);  */
 /* function argument not tested yet */
-
 void rk4(void deri(int , double [], double [], double ), \
 double h[], int n, double t, double dt)
 {
-#define naux 26 
-  
+#define naux 26   
 int i;
 double k1[naux],k2[naux],k3[naux],k4[naux],h0[naux];
 double dt2, dt6;
-
 dt2=dt/2.;
 dt6=dt/6.;
 
