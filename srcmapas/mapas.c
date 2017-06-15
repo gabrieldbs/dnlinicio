@@ -14,14 +14,15 @@ int main(int argc, char **argv) {
 	if(Programa == 26){
     	 printf("Ejecutando simulacion ejercicio 1.a)\n");
 	    double v_x,v_y,v_z, t,t_max;
-		 float a_max,paso;
+		 float a_max,paso,a_min;
 		 int iter,iteracion_deseada;
 	    sscanf(argv[2], "%d", &iter);
 	    sscanf(argv[3], "%lg", &v_x);
-	    sscanf(argv[4], "%f", &a_max);
-	    sscanf(argv[5], "%f", &paso);
-	    sscanf(argv[6], "%d", &iteracion_deseada);
-		 mapalog(iter,v_x,a_max,paso,iteracion_deseada);
+	    sscanf(argv[4], "%f", &a_min);
+	    sscanf(argv[5], "%f", &a_max);
+	    sscanf(argv[6], "%f", &paso);
+	    sscanf(argv[7], "%d", &iteracion_deseada);
+		 mapalog(iter,v_x,a_min,a_max,paso,iteracion_deseada);
   	}
 	
   return 0;

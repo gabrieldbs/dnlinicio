@@ -17,14 +17,17 @@ void ecuaciones1a(int n, double v[], double dv[], double t){
   return;
 }
 
+
 int ej_1a(double v_x,double v_y,double v_z,double t,double paso,double  t_max){
 	double v[3],dt,t_pre,T_max ,T;
 	FILE *ptr;
 	ptr=fopen("caos1.dat","w");
 	FILE *pt;	
-	pt=fopen("caos1t.dat","w");
+	pt=fopen("caos1t.dat","a");
 	FILE *ptt;	
-	ptt=fopen("caos1x.dat","w");
+	ptt=fopen("caos1x.dat","a");
+	fprintf(pt,"Barrido temporal /n");
+	fprintf(ptt,"Barrido x");
 	v[0]=v_x;	//10
 	v[1]=v_y;	//10
 	v[2]=v_z; 	//40
@@ -41,6 +44,9 @@ int ej_1a(double v_x,double v_y,double v_z,double t,double paso,double  t_max){
 		}
 		  t+=dt;
 	}
+	fprintf(pt,"\n");
+	fprintf(ptt,"\n");
+		
 	fclose(ptr);	
 	fclose(pt);
 	fclose(ptt);
