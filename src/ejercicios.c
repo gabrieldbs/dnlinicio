@@ -22,9 +22,9 @@ int ej_1a(double v_x,double v_y,double v_z,double t,double paso,double  t_max){
 	FILE *ptr;
 	ptr=fopen("caos1.dat","w");
 	FILE *pt;	
-	pt=fopen("caos1t.dat","a");
+	pt=fopen("caos1t.dat","w");
 	FILE *ptt;	
-	ptt=fopen("caos1x.dat","a");
+	ptt=fopen("caos1x.dat","w");
 	v[0]=v_x;	//10
 	v[1]=v_y;	//10
 	v[2]=v_z; 	//40
@@ -36,8 +36,8 @@ int ej_1a(double v_x,double v_y,double v_z,double t,double paso,double  t_max){
 		rk4(ecuaciones1a,v,3,t,dt);
 		if(t>t_pre){
 			fprintf(ptr,"%lg\t%lg\t%lg\t%lg\n",t,v[0],v[1],v[2]);			
-			fprintf(pt,"%lg  ,",t);
-			fprintf(ptt,"%lg  ,",v[0]);
+			fprintf(pt,"%lg ,",t);
+			fprintf(ptt,"%lg ,",v[0]);
 		}
 		  t+=dt;
 	}
@@ -56,7 +56,7 @@ void ecuaciones2a(int n, double v[], double dv[], double t)
   z=v[2];
   dv[0]= -y-z;
   dv[1]= x+0.2*y;
-  dv[2]= 0.2+z*(x-c);  // c va  haber que cambiarlo a mano
+  dv[2]= 0.2+z*(x-2.5);  // c va  haber que cambiarlo a mano
 
   return;
 }
@@ -73,7 +73,9 @@ int ej_2a(double v_x,double v_y,double v_z,double T,double paso,double  t_max, d
 	// t_ max = 300
 	while(t<t_max){
 		rk4(ecuaciones2a,v,3,t,dt);
-		if(t>t_pre) fprintf(ptr,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+		if(t>t_pre) {
+			fprintf(ptr,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			}
 		t+=dt;
 	}	
 
