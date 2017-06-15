@@ -4,5 +4,6 @@ void rk4(void deri(int , double [], double [], double ), double h[], int n, doub
 void ecuaciones1a(int n, double v[], double dv[], double t);
 void ecuaciones2a(int n, double v[], double dv[], double t);
 int ej_1a(double v_x,double v_y,double v_z,double t,double  paso,double t_max);
+int ej2_b(double v_x,double v_y,double v_z,double T,double paso,double  t_max, double c);
 int ej_2a(double v_x,double v_y,double v_z,double t,double  paso,double t_max, double c);
 #endif
