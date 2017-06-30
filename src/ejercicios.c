@@ -69,7 +69,7 @@ void ecuaciones2a(int n, double v[], double dv[], double t)
 int ej_2a(double v_x,double v_y,double v_z,double T,double paso,double  t_max, double c){
 	FILE *ptr;
 	double v[3],t,dt,t_pre;
-	ptr=fopen("caos2a.dat","w");
+	ptr=fopen("caos2a_2.5.dat","w");
 	v[0]=v_x; 	//-1
 	v[1]=v_y;	// -5
 	v[2]=v_z;		//2
@@ -91,12 +91,16 @@ int ej_2a(double v_x,double v_y,double v_z,double T,double paso,double  t_max, d
 
 int ej2_b(double v_x,double v_y,double v_z,double T,double paso,double  t_max, double c){
 	FILE *ptr;
-	double v[3],t,dt,t_pre,*x, y_pre;
+	double v[3],t,dt,t_pre,*x, y_pre,x_pre;
   double a;
-  ptr=fopen("caos2b.dat","a");
+	FILE *pt;
+  pt=fopen("caos2b_2.dat","w");
+	FILE *ptt;	
+  ptt=fopen("caos2b_3.dat","w");
+  ptr=fopen("caos2b_1.dat","w");
 	v[0]=v_x; 	//-1
 	v[1]=v_y;	// -5
-	v[2]=v_z;		//3
+	v[2]=v_z;		//2
    dt=paso;	//0.001
 	t= T;//0
 	t_pre=0;
@@ -106,21 +110,111 @@ int ej2_b(double v_x,double v_y,double v_z,double T,double paso,double  t_max, d
     if(t>t_pre & v[0]>0  & v[1]*y_pre <0) {
 			fprintf(ptr,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
 			}
+	if(t>t_pre  & v[1] >0& v[0]*x_pre <0) {
+			fprintf(pt,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			}
+	if(t>t_pre  & v[0] >0& sqrt((v[0]-v[1])*(v[0]-v[1])) <0.01) {
+			fprintf(ptt,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			}
     y_pre=v[1];
+	 x_pre=v[0];
 		t+=dt;
 	}
-  fprintf(ptr,"\n");
-	fclose(ptr);
+   fprintf(ptr,"\n");
+	fclose(ptr);   
+	fprintf(ptt,"\n");
+	fclose(ptt);
+   fprintf(pt,"\n");
+	fclose(pt);
 	return(0);
 }
 /*
 planos
-a*x+b*y+c*z =d;
-c=0
+a*x+b*y =d;
 en el caso puesto es a =0
 hacer para variios
 */
 
+
+
+int ej2_c(double v_x,double v_y,double v_z,double T,double paso,double  t_max, double c){
+	double v[3],t,dt,t_pre,*x, y_pre,x_pre, z_pre;
+  double a;
+	FILE *pt;
+  pt=fopen("caos2c_1.dat","w");
+	
+	v[0]=v_x; 	//-1
+	v[1]=v_y;	// -5
+	v[2]=v_z;		//2
+   dt=paso;	//0.001
+	t= T;//0
+	t_pre=0;
+	// t_ max = 300
+  while(t<t_max){
+		rk4(ecuaciones2a,v,3,t,dt);
+    if(t>t_pre & sqrt((v[0]-x_pre)*(v[0]-x_pre)+(v[1]-y_pre)*(v[1]-y_pre)+(v[2]-z_pre)*(v[2]-z_pre))<0.1) { //0.00295
+			fprintf(pt,"%lg\t%lg\t%lg\n%lg\t%lg\t%lg\n",v[0],v[1],v[2],x_pre,y_pre,z_pre);
+			}
+	 z_pre=v[2];
+    y_pre=v[1];
+	 x_pre=v[0];
+		t=t+dt;
+		t_pre=0.01;	
+	}
+   
+   fprintf(pt,"\n");
+	fclose(pt);
+
+
+	return(0);
+}
+
+
+int ej2_c_2(double v_x,double v_y,double v_z,double T,double paso,double  t_max, double c){
+	double v[3],t,dt,t_pre,*x, y_pre,x_pre, z_pre;
+  double a;
+	int i=0;
+	FILE *pt;
+  pt=fopen("caos2c_1.dat","w");	
+	v[0]=v_x; 	//-1
+	v[1]=v_y;	// -5
+	v[2]=v_z;		//2
+   dt=paso;	//0.001
+	t= T;//0
+	double *vecx=malloc((t_max/dt)*sizeof(double));
+	double *vecy=malloc((t_max/dt)*sizeof(double));
+	double *vecz=malloc((t_max/dt)*sizeof(double));
+	double *vect=malloc((t_max/dt)*sizeof(double));
+	for(int i=0;i<t_max/dt;i++){
+		t=i*dt;
+		rk4(ecuaciones2a,v,3,t,dt);
+		vecx[i]=v[0];	
+		vecy[i]=v[1];
+		vecz[i]=v[2];
+		vect[i]=t;}
+		i=0;
+
+
+	while(i<t_max/dt){
+		i=i+1;
+	 z_pre=vecx[i];
+    y_pre=vecy[i];
+	 x_pre=vecz[i];
+	 t_pre=vect[i];
+		for(int j =i;j<t_max/dt;j++){
+			if( vect[j]-t_pre>0.1 & sqrt((vecx[j]-x_pre)*(vecx[j]-x_pre)+(vecy[j]-y_pre)*(vecy[j]-y_pre)+(vecz[j]-z_pre)*(vecz[j]-z_pre))<1){
+				fprintf(pt,"%lg\t%lg\t%lg\n%lg\t%lg\t%lg\n",vecx[j],vecy[j],vecz[j],x_pre,y_pre,z_pre);
+				printf("\n t=%lg tpre=%lg",vect[j],t_pre);}			
+		}
+	}	
+   fprintf(pt,"\n");
+	fclose(pt);
+	free(vecx);
+	free(vecy);
+	free(vecz);	
+	free(vect);
+	return(0);
+}
 
 /*
 ejercicios c

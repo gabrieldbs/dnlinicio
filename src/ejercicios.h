@@ -6,4 +6,6 @@ void ecuaciones2a(int n, double v[], double dv[], double t);
 int ej_1a(double v_x,double v_y,double v_z,double t,double  paso,double t_max);
 int ej2_b(double v_x,double v_y,double v_z,double T,double paso,double  t_max, double c);
 int ej_2a(double v_x,double v_y,double v_z,double t,double  paso,double t_max, double c);
+int ej2_c(double v_x,double v_y,double v_z,double T,double paso,double  t_max, double c);
+int ej2_c_2(double v_x,double v_y,double v_z,double T,double paso,double  t_max, double c);
 #endif
