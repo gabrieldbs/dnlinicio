@@ -91,49 +91,106 @@ int ej_2a(double v_x,double v_y,double v_z,double T,double paso,double  t_max, d
 
 int ej2_b(double v_x,double v_y,double v_z,double T,double paso,double  t_max, double c){
 	FILE *ptr;
+   ptr=fopen("caos2b_0.dat","w");
 	double v[3],t,dt,t_pre,*x, y_pre,x_pre;
-  double a;
+   double a,theta;
 	FILE *pt;
-  pt=fopen("caos2b_2.dat","w");
-	FILE *ptt;	
-  ptt=fopen("caos2b_3.dat","w");
-  ptr=fopen("caos2b_1.dat","w");
+   pt=fopen("caos2b_1_6.dat","w");
+	//FILE *ptt;	
+  //  ptt=fopen("caos2b_3.dat","w");
+	FILE *ptt;
+	ptt=fopen("caos2b_2_6.dat","w");
+	FILE *pttr;
+	pttr=fopen("caos2b_3_6.dat","w");
+	FILE *pttrr;
+	pttrr=fopen("caos2b_4_6.dat","w");
+	FILE *pttt;
+	pttt=fopen("caos2b_5_6.dat","w");
+	FILE *ptm;
+	ptm=fopen("caos2b_1_2.dat","w");
+
+	FILE *ptmm;
+	ptmm=fopen("caos2b_1.dat","w");
+	
+  for (int j=0;j<6;j++){
 	v[0]=v_x; 	//-1
 	v[1]=v_y;	// -5
 	v[2]=v_z;		//2
    dt=paso;	//0.001
 	t= T;//0
 	t_pre=0;
+	theta=j*3.1415/3;
+	double l=tan(theta);
+	printf("theta=%lg,tang(theta)=%lg \n",theta,l);
 	// t_ max = 300
   while(t<t_max){
+		y_pre=v[1];
+		x_pre=v[0];
 		rk4(ecuaciones2a,v,3,t,dt);
-    if(t>t_pre & v[0]>0  & v[1]*y_pre <0) {
+    if(t>t_pre &j==0& y_pre<tan(0)*x_pre && v[1]>tan(0)*v[0]) {
 			fprintf(ptr,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			printf("0");
 			}
+    if(t>t_pre &j==1& y_pre<tan(theta)*x_pre && v[1]>tan(theta)*v[0]) {
+			fprintf(pt,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			printf("1");
+			}
+    if(t>t_pre &j==2& y_pre<(-tan(theta))*x_pre && v[1]>(-tan(theta))*v[0]) {
+			fprintf(ptt,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			printf("2");
+			}
+    if(t>t_pre &j==3& y_pre<(tan(theta))*x_pre && v[1]>(tan(theta))*v[0]) {
+			fprintf(pttr,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			printf("3");
+			}
+    if(t>t_pre &j==4& y_pre<tan(theta)*x_pre && v[1]>tan(theta)*v[0]) {
+			fprintf(pttrr,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);	
+			printf("4");
+			}
+    if(t>t_pre &j==5& y_pre<tan(theta)*x_pre && v[1]>tan(theta)*v[0]) {
+			fprintf(pttt,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			printf("5");		
+			}
+		if(t>t_pre  & v[1] >0& v[0]*x_pre <0) {
+			fprintf(ptm,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			}
+		if(t>t_pre  & v[0] >0& v[1]*y_pre <0) {
+			fprintf(ptmm,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			}
+
+/*
 	if(t>t_pre  & v[1] >0& v[0]*x_pre <0) {
 			fprintf(pt,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
 			}
-	if(t>t_pre  & v[0] >0& sqrt((v[0]-v[1])*(v[0]-v[1])) <0.01) {
+*/
+
+	/*if(t>t_pre  & v[0] >0& sqrt((v[0]-v[1])*(v[0]-v[1])) <0.01) {
 			fprintf(ptt,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
 			}
-    y_pre=v[1];
-	 x_pre=v[0];
+    */
+
 		t+=dt;
 	}
+  }
+   fprintf(ptm,"\n");
+	fclose(ptm);   
+
+   fprintf(ptmm,"\n");
+	fclose(ptmm);   
    fprintf(ptr,"\n");
 	fclose(ptr);   
 	fprintf(ptt,"\n");
 	fclose(ptt);
    fprintf(pt,"\n");
 	fclose(pt);
+   fprintf(pttt,"\n");
+	fclose(pttt);
+   fprintf(pttr,"\n");
+	fclose(pttr);
+   fprintf(pttrr,"\n");
+	fclose(pttrr);
 	return(0);
 }
-/*
-planos
-a*x+b*y =d;
-en el caso puesto es a =0
-hacer para variios
-*/
 
 
 
