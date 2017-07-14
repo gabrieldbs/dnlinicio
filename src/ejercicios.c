@@ -127,35 +127,29 @@ int ej2_b(double v_x,double v_y,double v_z,double T,double paso,double  t_max, d
 		y_pre=v[1];
 		x_pre=v[0];
 		rk4(ecuaciones2a,v,3,t,dt);
-    if(t>t_pre &j==0& y_pre<tan(0)*x_pre && v[1]>tan(0)*v[0]) {
-			fprintf(ptr,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
-			printf("0");
+    if(t>t_pre &j==0& y_pre<tan(theta)*x_pre && v[1]>tan(theta)*v[0]) {
+			fprintf(ptr,"%lg\t%lg\n",sqrt(v[0]*v[0]+v[1]*v[1]),v[2]);
 			}
-    if(t>t_pre &j==1& y_pre<tan(theta)*x_pre && v[1]>tan(theta)*v[0]) {
-			fprintf(pt,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
-			printf("1");
+    if(t>t_pre &j==1& y_pre<tan(-theta)*x_pre && v[1]>tan(-theta)*v[0]) {
+			fprintf(pt,"%lg\t%lg\n",sqrt(v[0]*v[0]+v[1]*v[1]),v[2]);			
 			}
-    if(t>t_pre &j==2& y_pre<(-tan(theta))*x_pre && v[1]>(-tan(theta))*v[0]) {
-			fprintf(ptt,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
-			printf("2");
+    if(t>t_pre &j==2& y_pre<(tan(-theta))*x_pre && v[1]>(tan(-theta))*v[0]) {
+			fprintf(ptt,"%lg\t%lg\n",sqrt(v[0]*v[0]+v[1]*v[1]),v[2]);			
 			}
     if(t>t_pre &j==3& y_pre<(tan(theta))*x_pre && v[1]>(tan(theta))*v[0]) {
-			fprintf(pttr,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
-			printf("3");
+			fprintf(pttr,"%lg\t%lg\n",sqrt(v[0]*v[0]+v[1]*v[1]),v[2]);			
 			}
     if(t>t_pre &j==4& y_pre<tan(theta)*x_pre && v[1]>tan(theta)*v[0]) {
-			fprintf(pttrr,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);	
-			printf("4");
+			fprintf(pttrr,"%lg\t%lg\n",sqrt(v[0]*v[0]+v[1]*v[1]),v[2]);			
 			}
     if(t>t_pre &j==5& y_pre<tan(theta)*x_pre && v[1]>tan(theta)*v[0]) {
-			fprintf(pttt,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
-			printf("5");		
+			fprintf(pttt,"%lg\t%lg\n",sqrt(v[0]*v[0]+v[1]*v[1]),v[2]);	
 			}
 		if(t>t_pre  & v[1] >0& v[0]*x_pre <0) {
-			fprintf(ptm,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			fprintf(ptm,"%lg\t%lg\n",sqrt(v[0]*v[0]+v[1]*v[1]),v[2]);
 			}
 		if(t>t_pre  & v[0] >0& v[1]*y_pre <0) {
-			fprintf(ptmm,"%lg\t%lg\t%lg\n",v[0],v[1],v[2]);
+			fprintf(ptmm,"%lg\t%lg\n", sqrt(v[0]*v[0]+v[1]*v[1]),v[2]);
 			}
 
 /*
@@ -196,7 +190,7 @@ int ej2_b(double v_x,double v_y,double v_z,double T,double paso,double  t_max, d
 
 int ej2_c(double v_x,double v_y,double v_z,double T,double paso,double  t_max, double c){
 	double v[3],t,dt,t_pre,*x, y_pre,x_pre, z_pre;
-  double a;
+  double a,DT;
 	FILE *pt;
   pt=fopen("caos2c_1.dat","w");
 	
@@ -205,18 +199,33 @@ int ej2_c(double v_x,double v_y,double v_z,double T,double paso,double  t_max, d
 	v[2]=v_z;		//2
    dt=paso;	//0.001
 	t= T;//0
-	t_pre=0;
+	t_pre=10;
+	z_pre=v_z;
+ 	y_pre=v_y;
+	x_pre=v_x;
+	
 	// t_ max = 300
   while(t<t_max){
 		rk4(ecuaciones2a,v,3,t,dt);
-    if(t>t_pre & sqrt((v[0]-x_pre)*(v[0]-x_pre)+(v[1]-y_pre)*(v[1]-y_pre)+(v[2]-z_pre)*(v[2]-z_pre))<0.1) { //0.00295
-			fprintf(pt,"%lg\t%lg\t%lg\n%lg\t%lg\t%lg\n",v[0],v[1],v[2],x_pre,y_pre,z_pre);
+		
+		if(t<9 & 8<t){
+			z_pre=v[2];
+   	 	y_pre=v[1];
+	 		x_pre=v[0];
+			t_pre = t;
+
+		}
+    if(t>t_pre+1 & sqrt((v[0]-x_pre)*(v[0]-x_pre)+(v[1]-y_pre)*(v[1]-y_pre)+(v[2]-z_pre)*(v[2]-z_pre))<0.4) { //0.00295
+			DT=t-t_pre;
+			fprintf(pt,"%lg\t%lg\t%lg\t%lg\t%lg\t%lg\t%lg\t%lg\t%lg\n",x_pre,y_pre,z_pre,v[0],v[1],v[2],t_pre,t,DT);
+			t_pre = t;
+			z_pre=v[2];
+   	 	y_pre=v[1];
+	 		x_pre=v[0];
+			//printf("l"); 
 			}
-	 z_pre=v[2];
-    y_pre=v[1];
-	 x_pre=v[0];
-		t=t+dt;
-		t_pre=0.01;	
+	 	t=t+dt;
+		//t_pre= t + 0.01;	
 	}
    
    fprintf(pt,"\n");
@@ -232,7 +241,7 @@ int ej2_c_2(double v_x,double v_y,double v_z,double T,double paso,double  t_max,
   double a;
 	int i=0;
 	FILE *pt;
-  pt=fopen("caos2c_1.dat","w");	
+  pt=fopen("caos2c_1_2.dat","w");	
 	v[0]=v_x; 	//-1
 	v[1]=v_y;	// -5
 	v[2]=v_z;		//2
@@ -248,7 +257,9 @@ int ej2_c_2(double v_x,double v_y,double v_z,double T,double paso,double  t_max,
 		vecx[i]=v[0];	
 		vecy[i]=v[1];
 		vecz[i]=v[2];
-		vect[i]=t;}
+		vect[i]=t;
+  //printf("%lg \n",t);
+		}
 		i=0;
 
 
@@ -259,9 +270,12 @@ int ej2_c_2(double v_x,double v_y,double v_z,double T,double paso,double  t_max,
 	 x_pre=vecz[i];
 	 t_pre=vect[i];
 		for(int j =i;j<t_max/dt;j++){
-			if( vect[j]-t_pre>0.1 & sqrt((vecx[j]-x_pre)*(vecx[j]-x_pre)+(vecy[j]-y_pre)*(vecy[j]-y_pre)+(vecz[j]-z_pre)*(vecz[j]-z_pre))<1){
-				fprintf(pt,"%lg\t%lg\t%lg\n%lg\t%lg\t%lg\n",vecx[j],vecy[j],vecz[j],x_pre,y_pre,z_pre);
-				printf("\n t=%lg tpre=%lg",vect[j],t_pre);}			
+			if( vect[j]-t_pre>0.03 && sqrt((vecx[j]-x_pre)*(vecx[j]-x_pre)+(vecy[j]-y_pre)*(vecy[j]-y_pre)+(vecz[j]-z_pre)*(vecz[j]-z_pre))<0.01){
+				for (int k=i;k<j;k++){
+					fprintf(pt,"%lg\t%lg\t%lg\n",vecx[k],vecy[k],vecz[k]);
+				printf("\n t_pre=%lg ",t_pre);}
+				break;
+			}			
 		}
 	}	
    fprintf(pt,"\n");

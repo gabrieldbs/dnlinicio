@@ -64,6 +64,18 @@ int main(int argc, char **argv) {
 	    sscanf(argv[6], "%lg", &paso); //0.001
 	    sscanf(argv[7], "%lg", &t_max); //300
 	    sscanf(argv[8], "%lg", &c); //5
+   	 ej2_c(v_x, v_y,v_z,t, paso, t_max,c);
+  	}
+ if(Programa == 706){
+    	 printf("Ejecutando simulacion ejercicio 2.c.2)\n");
+	    double v_x,v_y,v_z, t,t_max,paso,c	;
+	    sscanf(argv[2], "%lg", &v_x); //-1 
+	    sscanf(argv[3], "%lg", &v_y); //-5
+	    sscanf(argv[4], "%lg", &v_z); //2
+	    sscanf(argv[5], "%lg", &t); //0
+	    sscanf(argv[6], "%lg", &paso); //0.001
+	    sscanf(argv[7], "%lg", &t_max); //300
+	    sscanf(argv[8], "%lg", &c); //5
    	 ej2_c_2(v_x, v_y,v_z,t, paso, t_max,c);
   	}
   return 0;
