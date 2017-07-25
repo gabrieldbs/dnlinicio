@@ -69,7 +69,7 @@ void ecuaciones2a(int n, double v[], double dv[], double t)
 int ej_2a(double v_x,double v_y,double v_z,double T,double paso,double  t_max, double c){
 	FILE *ptr;
 	double v[3],t,dt,t_pre;
-	ptr=fopen("caos2a_2.5.dat","w");
+	ptr=fopen("caos2d_2.dat","w");
 	v[0]=v_x; 	//-1
 	v[1]=v_y;	// -5
 	v[2]=v_z;		//2
