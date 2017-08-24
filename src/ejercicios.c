@@ -22,12 +22,12 @@ int ej_1a(double v_x,double v_y,double v_z,double t,double paso,double  t_max){
 	double v[3],dt,t_pre,T_max ,T;
 	FILE *ptr;
 	ptr=fopen("caos1.dat","w");
-	FILE *pt;
-	pt=fopen("caos1t.dat","a");
-	FILE *ptt;
-	ptt=fopen("caos1x.dat","a");
-	fprintf(pt,"Barrido temporal /n");
-	fprintf(ptt,"Barrido x");
+//	FILE *pt;
+//	pt=fopen("caos1t.dat","a");
+	//FILE *ptt;
+	//ptt=fopen("caos1x.dat","a");
+	//fprintf(pt,"Barrido temporal /n");
+//	fprintf(ptt,"Barrido x");
 	v[0]=v_x;	//10
 	v[1]=v_y;	//10
 	v[2]=v_z; 	//40
@@ -39,17 +39,17 @@ int ej_1a(double v_x,double v_y,double v_z,double t,double paso,double  t_max){
 		rk4(ecuaciones1a,v,3,t,dt);
 		if(t>t_pre){
 			fprintf(ptr,"%lg\t%lg\t%lg\t%lg\n",t,v[0],v[1],v[2]);
-			fprintf(pt,"%lg ,",t);
-			fprintf(ptt,"%lg ,",v[0]);
+			//fprintf(pt,"%lg ,",t);
+			//fprintf(ptt,"%lg ,",v[0]);
 		}
 		  t+=dt;
 	}
-	fprintf(pt,"\n");
-	fprintf(ptt,"\n");
+	//fprintf(pt,"\n");
+//	fprintf(ptt,"\n");
 
 	fclose(ptr);
-	fclose(pt);
-	fclose(ptt);
+	//fclose(pt);
+	//fclose(ptt);
 	return(0);
 }
 
@@ -192,7 +192,7 @@ int ej2_c(double v_x,double v_y,double v_z,double T,double paso,double  t_max, d
 	double v[3],t,dt,t_pre,*x, y_pre,x_pre, z_pre;
   double a,DT;
 	FILE *pt;
-  pt=fopen("caos2c_1.dat","w");
+  pt=fopen("caos2e_1.dat","w");
 	
 	v[0]=v_x; 	//-1
 	v[1]=v_y;	// -5
@@ -206,9 +206,9 @@ int ej2_c(double v_x,double v_y,double v_z,double T,double paso,double  t_max, d
 	
 	// t_ max = 300
   while(t<t_max){
-		rk4(ecuaciones2a,v,3,t,dt);
+		rk4(ecuaciones1a,v,3,t,dt);
 		
-		if(t<9 & 8<t){
+		if(t<2 & 3<t){
 			z_pre=v[2];
    	 	y_pre=v[1];
 	 		x_pre=v[0];
